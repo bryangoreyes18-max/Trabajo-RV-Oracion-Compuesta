@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RV INTERACTIVE - LA ORACIÓN COMPUESTA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600;1,800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        editorial: {
+                            bg: '#f9f6f0',
+                            card: '#f2ece1',
+                            border: '#e2d7c5',
+                            wine: '#6b1d2f',
+                            navy: '#1b2a4a',
+                            gold: '#b8860b',
+                            dark: '#2c221e',
+                            muted: '#7d6f63'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f9f6f0;
+            color: #2c221e;
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, .font-serif-title {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        .touch-btn {
+            min-height: 50px;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        #map-container {
+            cursor: grab;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #map-container:active {
+            cursor: grabbing;
+        }
+        .map-node {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .map-node:hover {
+            transform: translateY(-2px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f2ece1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b8860b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-editorial-wine selection:text-white">
+
+    <!-- TOP HEADER / NAV BAR -->
+    <header class="border-b border-editorial-border bg-[#f4efe6] sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-editorial-wine text-white flex items-center justify-center font-serif text-lg font-bold shadow-md">
+                    RV
+                </div>
+                <div>
+                    <span class="text-xs tracking-widest uppercase font-bold text-editorial-gold block">Archivo Escolar • Exposición RV</span>
+                    <h1 class="text-xl font-bold font-serif text-editorial-navy">Oración Compuesta</h1>
+                </div>
+            </div>
+
+            <!-- NAVIGATION LINKS -->
+            <nav class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-editorial-dark">
+                <a href="#portada" class="hover:text-editorial-wine transition">Portada</a>
+                <a href="#esquema" class="hover:text-editorial-wine transition">Esquema General</a>
+                <a href="#ejemplos" class="hover:text-editorial-wine transition">Carreras & Ejemplos</a>
+                <a href="#equipo" class="hover:text-editorial-wine transition">Equipo & Docente</a>
+                <a href="#ejercicios" class="hover:text-editorial-wine transition">Autoevaluación</a>
+            </nav>
+
+            <!-- ACTION CONTROLS -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleModal('modal-edit-team')" class="touch-btn bg-editorial-navy hover:bg-editorial-wine text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Editar Equipo</span>
+                </button>
+                <button onclick="toggleFullscreen()" class="touch-btn bg-editorial-card hover:bg-editorial-border text-editorial-navy border border-editorial-border px-3 py-2 rounded-lg text-xs font-bold transition">
+                    <i class="fa-solid fa-expand text-sm"></i>
+                </button>
+                <button onclick="window.print()" class="touch-btn bg-editorial-card hover:bg-editorial-border text-editorial-navy border border-editorial-border px-3 py-2 rounded-lg text-xs font-bold transition">
+                    <i class="fa-solid fa-print text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: PORTADA -->
+    <section id="portada" class="py-16 px-6 border-b border-editorial-border bg-gradient-to-b from-[#f9f6f0] to-[#f4efe6]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center gap-2 border-b-2 border-editorial-wine pb-1">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-editorial-wine">Una Lectura Sintáctica del Lenguaje</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold font-serif text-editorial-navy leading-tight">
+                    Entre la <em class="text-editorial-wine italic font-normal">libertad</em> y la estructura
+                </h1>
+                
+                <p class="text-lg md:text-xl font-serif italic text-editorial-muted">
+                    Sintaxis avanzada y proposiciones complejas aplicadas a las Ciencias Económicas, Ingeniería de Sistemas e Ingeniería Biomédica.
+                </p>
+
+                <p class="text-sm text-editorial-dark max-w-xl leading-relaxed">
+                    Exposición interactiva diseñada para pantalla electrónica. Explora el mapa conceptual jerárquico, desglosa ejemplos complejos y analiza la coherencia sintáctica.
+                </p>
+
+                <div class="pt-4 flex flex-wrap gap-4">
+                    <a href="#esquema" class="touch-btn bg-editorial-wine hover:bg-editorial-navy text-white px-8 py-4 rounded-xl font-semibold text-sm transition shadow-lg flex items-center gap-3">
+                        <span>EXPLORAR ESQUEMA INTERACTIVO</span>
+                        <i class="fa-solid fa-arrow-right-long"></i>
+                    </a>
+                    <a href="#ejemplos" class="touch-btn bg-editorial-card hover:bg-editorial-border text-editorial-navy border border-editorial-border px-6 py-4 rounded-xl font-semibold text-sm transition flex items-center">
+                        Ver Ejemplos por Carrera
+                    </a>
+                </div>
+
+                <div class="pt-6 border-t border-editorial-border/60 flex items-center gap-6 text-xs text-editorial-muted">
+                    <span><strong>ÁREA:</strong> Razonamiento Verbal</span>
+                    <span>•</span>
+                    <span><strong>NIVEL:</strong> Bachillerato / Académico</span>
+                    <span>•</span>
+                    <span><strong>AÑO:</strong> 2026</span>
+                </div>
+            </div>
+
+            <!-- MAIN EDITORIAL IMAGE SEPARATED -->
+            <div class="lg:col-span-5">
+                <div class="bg-editorial-card p-4 rounded-2xl border border-editorial-border shadow-xl space-y-3 relative group">
+                    <div class="relative overflow-hidden rounded-xl border border-editorial-border aspect-[4/3] bg-editorial-bg flex items-center justify-center">
+                        <!-- Usa su propia imagen independiente en img/editorial.jpg -->
+                        <img id="main-banner-img" src="img/editorial.jpg" alt="Ilustración Sintaxis" class="w-full h-full object-cover">
+                        
+                        <label class="absolute inset-0 bg-editorial-navy/60 text-white opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center cursor-pointer p-4 text-center">
+                            <i class="fa-solid fa-camera text-3xl mb-2"></i>
+                            <span class="text-xs font-bold">Cambiar Imagen de Portada</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadMainBanner(event)">
+                        </label>
+                    </div>
+                    <div class="text-center p-2">
+                        <span class="text-xs font-serif italic text-editorial-muted">Sintaxis Comparativa y Relaciones Proposicionales</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: ESQUEMA CONCEPTUAL INTERACTIVO -->
+    <section id="esquema" class="py-12 px-6 border-b border-editorial-border bg-[#f4efe6]">
+        <div class="max-w-7xl mx-auto space-y-6">
+            
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-editorial-border pb-4">
+                <div>
+                    <span class="text-xs font-bold text-editorial-gold uppercase tracking-widest">Visualización Jerárquica</span>
+                    <h2 class="text-3xl font-bold font-serif text-editorial-navy">Esquema General de la Oración Compuesta</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="zoomMap(1.2)" class="touch-btn bg-editorial-card border border-editorial-border text-editorial-navy w-11 h-11 rounded-lg flex items-center justify-center text-lg font-bold hover:bg-editorial-border">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </button>
+                    <button onclick="zoomMap(0.8)" class="touch-btn bg-editorial-card border border-editorial-border text-editorial-navy w-11 h-11 rounded-lg flex items-center justify-center text-lg font-bold hover:bg-editorial-border">
+                        <i class="fa-solid fa-magnifying-glass-minus"></i>
+                    </button>
+                    <button onclick="resetMap()" class="touch-btn bg-editorial-wine text-white px-4 h-11 rounded-lg text-xs font-bold shadow hover:bg-editorial-navy">
+                        <i class="fa-solid fa-rotate mr-1"></i> Reiniciar Vista
+                    </button>
+                </div>
+            </div>
+
+            <div id="map-container" class="bg-editorial-bg border-2 border-editorial-border rounded-2xl h-[700px] relative shadow-inner bg-[radial-gradient(#e2d7c5_1px,transparent_1px)] [background-size:20px_20px]">
+                <div id="map-world" class="absolute top-0 left-0 origin-top-left transition-transform duration-75 p-8 min-w-[1500px]">
+                    
+                    <div class="flex justify-center mb-8">
+                        <div class="map-node bg-editorial-wine text-white p-6 rounded-2xl shadow-2xl border-2 border-editorial-gold max-w-xl text-center">
+                            <span class="bg-editorial-gold text-editorial-dark text-[10px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full">Estructura Gramatical</span>
+                            <h3 class="text-3xl font-extrabold font-serif mt-1">LA ORACIÓN COMPUESTA</h3>
+                            <p class="text-xs text-editorial-card mt-2 font-medium">
+                                Sintagma oracional que integra dos o más proposiciones coordinadas o subordinadas con sus respectivos verbos conjugados.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-10">
+
+                        <!-- BRANCH A: COORDINADAS -->
+                        <div class="space-y-6">
+                            <div class="bg-editorial-navy text-white p-4 rounded-xl text-center border-b-4 border-editorial-gold shadow">
+                                <h4 class="text-xl font-bold font-serif">A. ORACIONES COORDINADAS</h4>
+                                <p class="text-xs text-slate-300">Proposiciones de igual jerarquía sintáctica e independencia semántica.</p>
+                            </div>
+
+                            <div class="bg-editorial-card p-5 rounded-xl border border-editorial-border shadow space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded bg-editorial-wine text-white text-xs font-bold flex items-center justify-center">1</span>
+                                    <h5 class="font-serif font-bold text-editorial-navy text-lg">Yuxtapuestas (Sin nexo conjuntivo)</h5>
+                                </div>
+                                <p class="text-xs text-editorial-dark">Se enlazan mediante signos ortográficos de puntuación:</p>
+                                <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold pt-1">
+                                    <div class="bg-white p-2 rounded border border-editorial-border text-editorial-wine">Coma ( , )</div>
+                                    <div class="bg-white p-2 rounded border border-editorial-border text-editorial-wine">Punto y Coma ( ; )</div>
+                                    <div class="bg-white p-2 rounded border border-editorial-border text-editorial-wine">Dos Puntos ( : )</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-editorial-card p-5 rounded-xl border border-editorial-border shadow space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded bg-editorial-wine text-white text-xs font-bold flex items-center justify-center">2</span>
+                                    <h5 class="font-serif font-bold text-editorial-navy text-lg">Conjuntivas (Con nexo coordinante)</h5>
+                                </div>
+                                <div class="space-y-2 text-xs">
+                                    <div class="bg-white p-2.5 rounded border-l-4 border-editorial-wine">
+                                        <strong class="text-editorial-wine">Copulativas:</strong> Adición (y, e, ni, que).
+                                    </div>
+                                    <div class="bg-white p-2.5 rounded border-l-4 border-editorial-navy">
+                                        <strong class="text-editorial-navy">Disyuntivas:</strong> Exclusión u opción (o, u, bien... bien).
+                                    </div>
+                                    <div class="bg-white p-2.5 rounded border-l-4 border-editorial-gold">
+                                        <strong class="text-editorial-gold">Adversativas:</strong> Oposición (pero, mas, sin embargo, no obstante).
+                                    </div>
+                                    <div class="bg-white p-2.5 rounded border-l-4 border-emerald-700">
+                                        <strong class="text-emerald-800">Distributivas:</strong> Alternancia (ya... ya, ora... ora).
+                                    </div>
+                                    <div class="bg-white p-2.5 rounded border-l-4 border-purple-800">
+                                        <strong class="text-purple-900">Explicativas:</strong> Aclaración (es decir, esto es, o sea).
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH B: SUBORDINADAS -->
+                        <div class="space-y-6">
+                            <div class="bg-editorial-wine text-white p-4 rounded-xl text-center border-b-4 border-editorial-gold shadow">
+                                <h4 class="text-xl font-bold font-serif">B. ORACIONES SUBORDINADAS</h4>
+                                <p class="text-xs text-slate-200">Dependencia sintáctica respecto a la proposición principal.</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-editorial-card p-4 rounded-xl border border-editorial-border">
+                                    <h5 class="font-serif font-bold text-editorial-navy text-sm mb-1">1. Sustantivas</h5>
+                                    <p class="text-xs text-editorial-dark">Cumplen función de Sujeto, O.D., O.I., Agente. Reemplazable por "ESO".</p>
+                                </div>
+                                <div class="bg-editorial-card p-4 rounded-xl border border-editorial-border">
+                                    <h5 class="font-serif font-bold text-editorial-navy text-sm mb-1">2. Adjetivas</h5>
+                                    <p class="text-xs text-editorial-dark">Modifican a un sustantivo antecedente (Especificativas y Explicativas).</p>
+                                </div>
+                            </div>
+
+                            <!-- MNEMONIC BOX -->
+                            <div class="bg-gradient-to-br from-editorial-navy to-editorial-dark text-white p-5 rounded-2xl border-2 border-editorial-gold shadow-xl space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <h5 class="font-serif font-bold text-editorial-gold text-lg">3. Adverbiales (Clave Mnemotécnica)</h5>
+                                    <span class="bg-editorial-gold text-editorial-dark text-[10px] font-black px-2.5 py-1 rounded uppercase tracking-widest">
+                                        REGLA RV
+                                    </span>
+                                </div>
+
+                                <div class="bg-editorial-card/10 border border-editorial-gold/30 p-3 rounded-xl text-center">
+                                    <span class="text-2xl font-extrabold font-serif tracking-widest text-editorial-gold">
+                                        CO - CO - CO - CO - A - CA - FI
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">1. CO</span>ndicional (Si, siempre que)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">2. CO</span>ncesiva (Aunque, aun cuando)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">3. CO</span>nsecutiva (Así que, por ende)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">4. CO</span>mparación (Tan... como)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">5. A</span>nunciativa (Que...)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10">
+                                        <span class="font-bold text-editorial-gold">6. CA</span>usal (Porque, puesto que)
+                                    </div>
+                                    <div class="bg-white/10 p-2 rounded border border-white/10 col-span-2 text-center">
+                                        <span class="font-bold text-editorial-gold">7. FI</span>nalidad (Para que, a fin de que)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: EXAMPLES BY CAREER -->
+    <section id="ejemplos" class="py-16 px-6 border-b border-editorial-border bg-editorial-bg">
+        <div class="max-w-7xl mx-auto space-y-12">
+            
+            <div class="text-center space-y-2 max-w-2xl mx-auto">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-editorial-wine">Análisis Sintáctico Especializado</span>
+                <h2 class="text-4xl font-bold font-serif text-editorial-navy">Ejemplos Complejos por Carrera</h2>
+                <p class="text-sm text-editorial-muted">4 Oraciones analizadas minuciosamente para cada integrante de la exposición.</p>
+            </div>
+
+            <div class="flex justify-center gap-3 flex-wrap">
+                <button onclick="switchCareerTab('kirk')" id="tab-btn-kirk" class="career-tab-btn active touch-btn px-6 py-3 rounded-xl font-bold text-sm bg-editorial-navy text-white shadow">
+                    <i class="fa-solid fa-chart-line mr-2"></i> Stephen Kirk (Economía)
+                </button>
+                <button onclick="switchCareerTab('snayder')" id="tab-btn-snayder" class="career-tab-btn touch-btn px-6 py-3 rounded-xl font-bold text-sm bg-editorial-card text-editorial-navy border border-editorial-border">
+                    <i class="fa-solid fa-code mr-2"></i> Snayder Huiman (Sistemas)
+                </button>
+                <button onclick="switchCareerTab('bryan')" id="tab-btn-bryan" class="career-tab-btn touch-btn px-6 py-3 rounded-xl font-bold text-sm bg-editorial-card text-editorial-navy border border-editorial-border">
+                    <i class="fa-solid fa-heart-pulse mr-2"></i> Bryan Reyes (Biomédica)
+                </button>
+            </div>
+
+            <div id="career-content-kirk" class="career-content space-y-6">
+                <div class="bg-editorial-card p-6 rounded-2xl border border-editorial-border flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-editorial-wine uppercase tracking-wider">Especialidad Macroeconomía y Finanzas</span>
+                        <h3 class="text-2xl font-serif font-bold text-editorial-navy">Stephen Kirk Guanilo</h3>
+                    </div>
+                    <span class="bg-editorial-navy text-white text-xs font-bold px-4 py-2 rounded-lg">4 Ejemplos Financieros</span>
+                </div>
+                <div id="kirk-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+
+            <div id="career-content-snayder" class="career-content hidden space-y-6">
+                <div class="bg-editorial-card p-6 rounded-2xl border border-editorial-border flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-editorial-wine uppercase tracking-wider">Especialidad Software y Arquitectura Cloud</span>
+                        <h3 class="text-2xl font-serif font-bold text-editorial-navy">Snayder Huaccha Huiman</h3>
+                    </div>
+                    <span class="bg-editorial-navy text-white text-xs font-bold px-4 py-2 rounded-lg">4 Ejemplos de Sistemas</span>
+                </div>
+                <div id="snayder-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+
+            <div id="career-content-bryan" class="career-content hidden space-y-6">
+                <div class="bg-editorial-card p-6 rounded-2xl border border-editorial-border flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-editorial-wine uppercase tracking-wider">Especialidad Biomecánica y Procesamiento de Señales</span>
+                        <h3 class="text-2xl font-serif font-bold text-editorial-navy">Bryan Reyes Esquerre</h3>
+                    </div>
+                    <span class="bg-editorial-navy text-white text-xs font-bold px-4 py-2 rounded-lg">4 Ejemplos Biomédicos</span>
+                </div>
+                <div id="bryan-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: TEAM & TEACHER SECTION -->
+    <section id="equipo" class="py-16 px-6 border-b border-editorial-border bg-[#f4efe6]">
+        <div class="max-w-7xl mx-auto space-y-12">
+            
+            <div class="text-center space-y-2">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-editorial-wine">Presentación Académica</span>
+                <h2 class="text-4xl font-bold font-serif text-editorial-navy">Equipo de Exposición & Docente</h2>
+            </div>
+
+            <!-- TEACHER CARD -->
+            <div class="bg-editorial-card border-2 border-editorial-gold p-6 rounded-2xl shadow-lg max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-6">
+                <div class="relative w-32 h-32 rounded-xl overflow-hidden border-2 border-editorial-gold flex-shrink-0 bg-editorial-bg">
+                    <img id="display-profe-img" src="img/docente.jpg" alt="Docente" class="w-full h-full object-cover">
+                    <label class="absolute inset-0 bg-editorial-navy/60 text-white opacity-0 hover:opacity-100 transition flex items-center justify-center cursor-pointer text-xs font-bold text-center p-1">
+                        Subir Foto
+                        <input type="file" accept="image/*" class="hidden" onchange="uploadMemberImg(event, 'profe')">
+                    </label>
+                </div>
+                <div class="space-y-2 text-center md:text-left flex-grow">
+                    <span class="bg-editorial-gold text-editorial-dark text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded">Docente Evaluador</span>
+                    <h3 id="display-profe-name" class="text-2xl font-serif font-bold text-editorial-navy"> Mg. Profesor de Razonamiento Verbal </h3>
+                    <p id="display-profe-info" class="text-xs text-editorial-muted">Cátedra de Lingüística, Sintaxis y Comprensión LECTORA.</p>
+                </div>
+            </div>
+
+            <!-- 3 MEMBERS CARDS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- MEMBER 1: STEPHEN KIRK -->
+                <div class="bg-editorial-card border border-editorial-border p-6 rounded-2xl shadow-md space-y-4 text-center">
+                    <div class="relative w-28 h-28 mx-auto rounded-xl overflow-hidden border border-editorial-border bg-editorial-bg">
+                        <img id="display-kirk-img" src="img/kirk.jpg" alt="Stephen Kirk" class="w-full h-full object-cover">
+                        <label class="absolute inset-0 bg-editorial-navy/60 text-white opacity-0 hover:opacity-100 transition flex items-center justify-center cursor-pointer text-xs font-bold p-1">
+                            Subir Foto
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadMemberImg(event, 'kirk')">
+                        </label>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-editorial-wine uppercase tracking-widest block">Economía y Finanzas</span>
+                        <h4 id="display-kirk-name" class="font-serif font-bold text-xl text-editorial-navy">KIRK GUANILO STEPHEN</h4>
+                    </div>
+                </div>
+
+                <!-- MEMBER 2: SNAYDER HUIMAN -->
+                <div class="bg-editorial-card border border-editorial-border p-6 rounded-2xl shadow-md space-y-4 text-center">
+                    <div class="relative w-28 h-28 mx-auto rounded-xl overflow-hidden border border-editorial-border bg-editorial-bg">
+                        <img id="display-snayder-img" src="img/snayder.jpg" alt="Snayder Huiman" class="w-full h-full object-cover">
+                        <label class="absolute inset-0 bg-editorial-navy/60 text-white opacity-0 hover:opacity-100 transition flex items-center justify-center cursor-pointer text-xs font-bold p-1">
+                            Subir Foto
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadMemberImg(event, 'snayder')">
+                        </label>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-editorial-wine uppercase tracking-widest block">Ingeniería de Sistemas</span>
+                        <h4 id="display-snayder-name" class="font-serif font-bold text-xl text-editorial-navy">HUACCHA HUIMAN SNAYDER</h4>
+                    </div>
+                </div>
+
+                <!-- MEMBER 3: BRYAN REYES -->
+                <div class="bg-editorial-card border border-editorial-border p-6 rounded-2xl shadow-md space-y-4 text-center">
+                    <div class="relative w-28 h-28 mx-auto rounded-xl overflow-hidden border border-editorial-border bg-editorial-bg">
+                        <img id="display-bryan-img" src="img/bryan.jpg" alt="Bryan Reyes" class="w-full h-full object-cover">
+                        <label class="absolute inset-0 bg-editorial-navy/60 text-white opacity-0 hover:opacity-100 transition flex items-center justify-center cursor-pointer text-xs font-bold p-1">
+                            Subir Foto
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadMemberImg(event, 'bryan')">
+                        </label>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-editorial-wine uppercase tracking-widest block">Ingeniería Biomédica</span>
+                        <h4 id="display-bryan-name" class="font-serif font-bold text-xl text-editorial-navy">REYES ESQUERRE BRYAN</h4>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: AUTOEVALUACIÓN -->
+    <section id="ejercicios" class="py-16 px-6 bg-editorial-bg">
+        <div class="max-w-5xl mx-auto space-y-8">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-editorial-wine">Práctica Interactiva Táctil</span>
+                <h2 class="text-3xl font-bold font-serif text-editorial-navy">Reto de Clasificación Sintáctica</h2>
+            </div>
+            <div id="quiz-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER EDITORIAL -->
+    <footer class="bg-editorial-navy text-white py-8 border-t border-editorial-border text-center text-xs space-y-2">
+        <p class="font-serif text-sm">RV INTERACTIVE • ORACIÓN COMPUESTA</p>
+        <p class="text-slate-400">Desarrollado para la Pizarra Interactiva de Razonamiento Verbal • 2026</p>
+    </footer>
+
+    <!-- EDIT MODAL FOR TEAM AND TEACHER -->
+    <div id="modal-edit-team" class="fixed inset-0 bg-editorial-navy/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-editorial-bg border border-editorial-border w-full max-w-xl rounded-2xl shadow-2xl p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-editorial-border pb-3">
+                <h3 class="font-serif font-bold text-xl text-editorial-navy">Editar Datos del Equipo</h3>
+                <button onclick="toggleModal('modal-edit-team')" class="text-editorial-muted hover:text-editorial-navy text-xl font-bold">✕</button>
+            </div>
+
+            <form onsubmit="saveTeamInfo(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="font-bold block text-editorial-navy mb-1">Nombre Docente:</label>
+                    <input type="text" id="input-profe-name" class="w-full bg-white border border-editorial-border rounded-lg p-2.5 text-editorial-dark">
+                </div>
+                <div>
+                    <label class="font-bold block text-editorial-navy mb-1">Información Docente:</label>
+                    <input type="text" id="input-profe-info" class="w-full bg-white border border-editorial-border rounded-lg p-2.5 text-editorial-dark">
+                </div>
+                <div>
+                    <label class="font-bold block text-editorial-navy mb-1">Nombre Stephen Kirk:</label>
+                    <input type="text" id="input-kirk-name" class="w-full bg-white border border-editorial-border rounded-lg p-2.5 text-editorial-dark">
+                </div>
+                <div>
+                    <label class="font-bold block text-editorial-navy mb-1">Nombre Snayder Huiman:</label>
+                    <input type="text" id="input-snayder-name" class="w-full bg-white border border-editorial-border rounded-lg p-2.5 text-editorial-dark">
+                </div>
+                <div>
+                    <label class="font-bold block text-editorial-navy mb-1">Nombre Bryan Reyes:</label>
+                    <input type="text" id="input-bryan-name" class="w-full bg-white border border-editorial-border rounded-lg p-2.5 text-editorial-dark">
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-editorial-border">
+                    <button type="button" onclick="toggleModal('modal-edit-team')" class="touch-btn bg-editorial-card border border-editorial-border px-5 py-2 rounded-lg font-bold">Cancelar</button>
+                    <button type="submit" class="touch-btn bg-editorial-wine text-white px-6 py-2 rounded-lg font-bold shadow">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CODE -->
+    <script>
+        const EXAMPLES_KIRK = [
+            {
+                sentence: "El Banco Central incrementó la tasa de interés de referencia; sin embargo, la inflación anual no cedió en el último trimestre.",
+                p1: "El Banco Central incrementó la tasa de interés de referencia",
+                p2: "la inflación anual no cedió en el último trimestre",
+                nexo: "sin embargo (Conjunción Adversativa)",
+                verbos: "incrementó / cedió",
+                tipo: "Coordinada Conjuntiva Adversativa"
+            },
+            {
+                sentence: "Si los inversionistas perciben inestabilidad fiscal en la región, la liquidez de los bonos soberanos caerá drásticamente.",
+                p1: "los inversionistas perciben inestabilidad fiscal en la región",
+                p2: "la liquidez de los bonos soberanos caerá drásticamente",
+                nexo: "Si (Nexo Condicional - CO)",
+                verbos: "perciben / caerá",
+                tipo: "Subordinada Adverbial Condicional (CO)"
+            },
+            {
+                sentence: "El analista macroeconómico proyectó el balance deficitario, así que la firma diversificó su portafolio accionario.",
+                p1: "El analista macroeconómico proyectó el balance deficitario",
+                p2: "la firma diversificó su portafolio accionario",
+                nexo: "así que (Nexo Consecutivo - CO)",
+                verbos: "proyectó / diversificó",
+                tipo: "Subordinada Adverbial Consecutiva (CO)"
+            },
+            {
+                sentence: "El directorio aprobó la colocación de activos a fin de que la entidad mantenga la solvencia financiera requerida.",
+                p1: "El directorio aprobó la colocación de activos",
+                p2: "la entidad mantenga la solvencia financiera requerida",
+                nexo: "a fin de que (Nexo de Finalidad - FI)",
+                verbos: "aprobó / mantenga",
+                tipo: "Subordinada Adverbial de Finalidad (FI)"
+            }
+        ];
+
+        const EXAMPLES_SNAYDER = [
+            {
+                sentence: "El microservicio de autenticación procesa las solicitudes JWT, pero la base de datos distribuida reporta una alta latencia.",
+                p1: "El microservicio de autenticación procesa las solicitudes JWT",
+                p2: "la base de datos distribuida reporta una alta latencia",
+                nexo: "pero (Conjunción Adversativa)",
+                verbos: "procesa / reporta",
+                tipo: "Coordinada Conjuntiva Adversativa"
+            },
+            {
+                sentence: "Aunque el cortafuegos bloqueó la incursión no autorizada, el administrador auditó el registro de eventos del servidor.",
+                p1: "el cortafuegos bloqueó la incursión no autorizada",
+                p2: "el administrador auditó el registro de eventos del servidor",
+                nexo: "Aunque (Nexo Concesivo - CO)",
+                verbos: "bloqueó / auditó",
+                tipo: "Subordinada Adverbial Concesiva (CO)"
+            },
+            {
+                sentence: "El modelo de redes neuronales entrena con mayor velocidad que el algoritmo heurístico tradicional procesa los datos.",
+                p1: "El modelo de redes neuronales entrena con mayor velocidad",
+                p2: "el algoritmo heurístico tradicional procesa los datos",
+                nexo: "más / que (Nexo Comparativo - CO)",
+                verbos: "entrena / procesa",
+                tipo: "Subordinada Adverbial de Comparación (CO)"
+            },
+            {
+                sentence: "El equipo devops optimizó el pipeline de integración continua porque el despliegue automático presentó fallas consecutivas.",
+                p1: "El equipo devops optimizó el pipeline de integración continua",
+                p2: "el despliegue automático presentó fallas consecutivas",
+                nexo: "porque (Nexo Causal - CA)",
+                verbos: "optimizó / presentó",
+                tipo: "Subordinada Adverbial Causal (CA)"
+            }
+        ];
+
+        const EXAMPLES_BRYAN = [
+            {
+                sentence: "El sistema electromiográfico registra la actividad neuromuscular: los electrodos captan microvoltajes en la extremidad afectada.",
+                p1: "El sistema electromiográfico registra la actividad neuromuscular",
+                p2: "los electrodos captan microvoltajes en la extremidad afectada",
+                nexo: ": (Dos Puntos - Signo Ortográfico)",
+                verbos: "registra / captan",
+                tipo: "Coordinada Yuxtapuesta"
+            },
+            {
+                sentence: "El ingeniero biomédico calibró el sensor piezoeléctrico puesto que la señal electrocardiográfica registraba ruido blanco.",
+                p1: "El ingeniero biomédico calibró el sensor piezoeléctrico",
+                p2: "la señal electrocardiográfica registraba ruido blanco",
+                nexo: "puesto que (Nexo Causal - CA)",
+                verbos: "calibró / registraba",
+                tipo: "Subordinada Adverbial Causal (CA)"
+            },
+            {
+                sentence: "Los cirujanos anunciaron que la prótesis biónica de rodilla respondió con éxito a los estímulos nerviosos.",
+                p1: "Los cirujanos anunciaron",
+                p2: "que la prótesis biónica de rodilla respondió con éxito a los estímulos nerviosos",
+                nexo: "que (Nexo Anunciativo - A)",
+                verbos: "anunciaron / respondió",
+                tipo: "Subordinada Anunciativa (A)"
+            },
+            {
+                sentence: "La bioimpresora 3D sintetizó el andamio tisular para que las células madre proliferen homogéneamente.",
+                p1: "La bioimpresora 3D sintetizó el andamio tisular",
+                p2: "las células madre proliferen homogéneamente",
+                nexo: "para que (Nexo de Finalidad - FI)",
+                verbos: "sintetizó / proliferen",
+                tipo: "Subordinada Adverbial de Finalidad (FI)"
+            }
+        ];
+
+        const QUIZ_DATA = [
+            {
+                q: "«Si el algoritmo financiero detecta volatilidad, el software congelará los fondos.» La oración es:",
+                options: ["Subordinada Adverbial Concesiva", "Subordinada Adverbial Condicional (CO)", "Coordinada Yuxtapuesta", "Subordinada Sustantiva"],
+                correct: 1
+            },
+            {
+                q: "«El ecógrafo emite impulsos de ultrasonido; la computadora procesa la imagen tridimensional.» La oración es:",
+                options: ["Coordinada Yuxtapuesta", "Subordinada Adjetiva", "Coordinada Copulativa", "Subordinada Final"],
+                correct: 0
+            },
+            {
+                q: "En la mnemotecnia CO-CO-CO-CO-A-CA-FI, la letra 'A' corresponde a la oración:",
+                options: ["Adversativa", "Adjetiva", "Anunciativa", "Adición"],
+                correct: 2
+            },
+            {
+                q: "«El servidor se reinició a fin de que el firewall aplique el nuevo parche.» La oración es:",
+                options: ["Subordinada Causal", "Subordinada de Finalidad (FI)", "Coordinada Explicativa", "Subordinada Comparativa"],
+                correct: 1
+            }
+        ];
+
+        function renderExamplesList(data, elementId) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = data.map((item, idx) => `
+                <div class="bg-editorial-card border border-editorial-border p-5 rounded-xl shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-black uppercase tracking-wider bg-editorial-wine text-white px-2.5 py-1 rounded">Ejemplo ${idx + 1}</span>
+                        <span class="text-xs font-bold text-editorial-navy bg-white border border-editorial-border px-3 py-1 rounded">${item.tipo}</span>
+                    </div>
+                    <p class="font-serif font-bold text-lg text-editorial-dark leading-snug">"${item.sentence}"</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2 border-t border-editorial-border/60">
+                        <div class="bg-white p-2 rounded border border-editorial-border">
+                            <span class="font-bold text-editorial-wine block">Proposición 1:</span>
+                            <span class="text-editorial-dark">${item.p1}</span>
+                        </div>
+                        <div class="bg-white p-2 rounded border border-editorial-border">
+                            <span class="font-bold text-editorial-navy block">Proposición 2:</span>
+                            <span class="text-editorial-dark">${item.p2}</span>
+                        </div>
+                        <div class="bg-white p-2 rounded border border-editorial-border">
+                            <span class="font-bold text-editorial-gold block">Nexo / Signo:</span>
+                            <span class="text-editorial-dark font-semibold">${item.nexo}</span>
+                        </div>
+                        <div class="bg-white p-2 rounded border border-editorial-border">
+                            <span class="font-bold text-purple-900 block">Verbos Conjugados:</span>
+                            <span class="text-editorial-dark font-semibold">${item.verbos}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchCareerTab(career) {
+            document.querySelectorAll('.career-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.career-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-editorial-navy', 'text-white');
+                btn.classList.add('bg-editorial-card', 'text-editorial-navy');
+            });
+
+            document.getElementById(`career-content-${career}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${career}`);
+            activeBtn.classList.remove('bg-editorial-card', 'text-editorial-navy');
+            activeBtn.classList.add('bg-editorial-navy', 'text-white');
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-list');
+            container.innerHTML = QUIZ_DATA.map((q, idx) => `
+                <div class="bg-editorial-card border border-editorial-border p-6 rounded-xl shadow-sm space-y-3">
+                    <span class="text-[10px] font-black uppercase tracking-wider bg-editorial-gold text-editorial-dark px-2.5 py-1 rounded">Pregunta ${idx + 1}</span>
+                    <h4 class="font-serif font-bold text-base text-editorial-navy">${q.q}</h4>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, oIdx) => `
+                            <button onclick="checkQuiz(this, ${idx}, ${oIdx})" class="touch-btn w-full text-left bg-white hover:bg-editorial-border border border-editorial-border p-3 rounded-lg text-xs font-semibold text-editorial-dark transition">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-feedback-${idx}" class="hidden p-2.5 rounded text-xs font-bold text-center"></div>
+                </div>
+            `).join('');
+        }
+
+        function checkQuiz(btn, qIdx, oIdx) {
+            const feedback = document.getElementById(`quiz-feedback-${qIdx}`);
+            feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-red-100', 'text-red-900');
+            
+            if (oIdx === QUIZ_DATA[qIdx].correct) {
+                feedback.classList.add('bg-emerald-100', 'text-emerald-900');
+                feedback.innerHTML = '✓ ¡Correcto! Identificación sintáctica acertada.';
+            } else {
+                feedback.classList.add('bg-red-100', 'text-red-900');
+                feedback.innerHTML = '✗ Respuesta incorrecta. Vuelve a revisar la premisa.';
+            }
+        }
+
+        // ZOOM AND PAN MAP LOGIC
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+        const container = document.getElementById('map-container');
+        const world = document.getElementById('map-world');
+
+        function updateTransform() {
+            world.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        function zoomMap(factor) {
+            scale *= factor;
+            scale = Math.min(Math.max(0.5, scale), 2.2);
+            updateTransform();
+        }
+
+        function resetMap() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        // UPLOAD IMAGE HELPER (FILEREADER LOCALSTORAGE BACKUP)
+        function uploadMainBanner(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('main-banner-img').src = e.target.result;
+                    localStorage.setItem('rv_main_banner', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadMemberImg(event, memberKey) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(`display-${memberKey}-img`).src = e.target.result;
+                    localStorage.setItem(`rv_img_${memberKey}`, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        const DEFAULT_TEAM = {
+            profeName: "Mg. Profesor de Razonamiento Verbal",
+            profeInfo: "Cátedra de Lingüística, Sintaxis y Comprensión LECTORA.",
+            kirkName: "KIRK GUANILO STEPHEN",
+            snayderName: "HUACCHA HUIMAN SNAYDER",
+            bryanName: "REYES ESQUERRE BRYAN"
+        };
+
+        function loadTeamInfo() {
+            const saved = JSON.parse(localStorage.getItem('rv_team_info')) || DEFAULT_TEAM;
+            
+            document.getElementById('display-profe-name').textContent = saved.profeName;
+            document.getElementById('display-profe-info').textContent = saved.profeInfo;
+            document.getElementById('display-kirk-name').textContent = saved.kirkName;
+            document.getElementById('display-snayder-name').textContent = saved.snayderName;
+            document.getElementById('display-bryan-name').textContent = saved.bryanName;
+
+            document.getElementById('input-profe-name').value = saved.profeName;
+            document.getElementById('input-profe-info').value = saved.profeInfo;
+            document.getElementById('input-kirk-name').value = saved.kirkName;
+            document.getElementById('input-snayder-name').value = saved.snayderName;
+            document.getElementById('input-bryan-name').value = saved.bryanName;
+
+            if (localStorage.getItem('rv_main_banner')) {
+                document.getElementById('main-banner-img').src = localStorage.getItem('rv_main_banner');
+            }
+            ['profe', 'kirk', 'snayder', 'bryan'].forEach(key => {
+                if (localStorage.getItem(`rv_img_${key}`)) {
+                    document.getElementById(`display-${key}-img`).src = localStorage.getItem(`rv_img_${key}`);
+                }
+            });
+        }
+
+        function saveTeamInfo(e) {
+            e.preventDefault();
+            const data = {
+                profeName: document.getElementById('input-profe-name').value,
+                profeInfo: document.getElementById('input-profe-info').value,
+                kirkName: document.getElementById('input-kirk-name').value,
+                snayderName: document.getElementById('input-snayder-name').value,
+                bryanName: document.getElementById('input-bryan-name').value
+            };
+            localStorage.setItem('rv_team_info', JSON.stringify(data));
+            loadTeamInfo();
+            toggleModal('modal-edit-team');
+        }
+
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        window.onload = function() {
+            renderExamplesList(EXAMPLES_KIRK, 'kirk-examples-list');
+            renderExamplesList(EXAMPLES_SNAYDER, 'snayder-examples-list');
+            renderExamplesList(EXAMPLES_BRYAN, 'bryan-examples-list');
+            renderQuiz();
+            loadTeamInfo();
+        };
+    </script>
+</body>
+</html>
